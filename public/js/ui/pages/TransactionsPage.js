@@ -11,14 +11,18 @@ class TransactionsPage {
    * через registerEvents()
    * */
   constructor( element ) {
-
+    if(element.innerHTML === ""){
+      throw new Error("Передан пустой элемент");
+    } else {
+      this.element = element;
+      this.registerEvents();
+    }
   }
 
   /**
    * Вызывает метод render для отрисовки страницы
    * */
   update() {
-
   }
 
   /**
@@ -28,7 +32,11 @@ class TransactionsPage {
    * TransactionsPage.removeAccount соответственно
    * */
   registerEvents() {
-
+    this.element.addEventListener("click", event => {
+      if(event.target.closest(".remove-account")){
+        this.removeAccount();
+      }
+    })
   }
 
   /**
@@ -41,7 +49,13 @@ class TransactionsPage {
    * для обновления приложения
    * */
   removeAccount() {
-
+    if(this.lastOptions === undefined) return;
+    if(confirm("«Вы действительно хотите удалить счёт?»")){
+      Account.remove(this.lastOptions, (err, response) => {
+        console.log(response);
+        console.log(err);
+      })
+    };
   }
 
   /**
@@ -61,7 +75,19 @@ class TransactionsPage {
    * в TransactionsPage.renderTransactions()
    * */
   render(options){
-
+   if(options === undefined) return;
+    this.lastOptions = options;
+    Account.get(options.account_id, (err, response) => {
+      response.data.map( item => {
+        if(item.id === options.account_id){
+          this.renderTitle(item.name);
+          Transaction.list(this.lastOptions, (err, response) => {
+            console.log(err);
+            console.log(response);
+          })
+        }
+      })
+    })
   }
 
   /**
@@ -77,7 +103,7 @@ class TransactionsPage {
    * Устанавливает заголовок в элемент .content-title
    * */
   renderTitle(name){
-
+    this.element.querySelector(".content-title").innerText = name;
   }
 
   /**
@@ -85,7 +111,7 @@ class TransactionsPage {
    * в формат «10 марта 2019 г. в 03:20»
    * */
   formatDate(date){
-
+    
   }
 
   /**
