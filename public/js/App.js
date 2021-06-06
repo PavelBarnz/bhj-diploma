@@ -208,20 +208,3 @@ class App {
     this.getForm("createExpense").renderAccountsList();
   }
 }
-
-let objMy = new FormData();
-objMy.append("account_id", "3ai3l314kpfldlso");
-let objobj = {account_id: "3ai3l314kpfldlso"};
-
-
-
-const xhr = new XMLHttpRequest;
-xhr.open("DELETE", "/account");
-xhr.responseType = "json";
-xhr.send(objMy);
-
-xhr.onreadystatechange = () => {
-  if(xhr.readyState === 4){
-    console.log(xhr.response)
-  }
-}
