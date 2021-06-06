@@ -6,7 +6,6 @@ const createRequest = (options = {}) => {
     const xhr = new XMLHttpRequest;
     xhr.open(options.method, options.url);
     xhr.responseType = options.responseType;
-    
 
     if(options.method !== "GET"){
         const formData = new FormData();
@@ -20,11 +19,7 @@ const createRequest = (options = {}) => {
 
     xhr.onreadystatechange = () => {
         if(xhr.readyState == 4){
-            if(xhr.response.success === true){
-                options.callback(null, xhr.response);
-            } else {
-                options.callback(xhr.response.error);
-            }
+            options.callback(xhr.response.error, xhr.response)
         }
     }
 };
