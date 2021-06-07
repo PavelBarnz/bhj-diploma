@@ -23,6 +23,7 @@ class TransactionsPage {
    * Вызывает метод render для отрисовки страницы
    * */
   update() {
+    this.render(this.lastOptions);
   }
 
   /**
@@ -35,6 +36,8 @@ class TransactionsPage {
     this.element.addEventListener("click", event => {
       if(event.target.closest(".remove-account")){
         this.removeAccount();
+      } else if(event.target.closest(".transaction__remove")){
+        this.removeTransaction(event.target.closest(".transaction__remove").dataset.id);
       }
     })
   }
@@ -51,9 +54,8 @@ class TransactionsPage {
   removeAccount() {
     if(this.lastOptions === undefined) return;
     if(confirm("«Вы действительно хотите удалить счёт?»")){
-      Account.remove(this.lastOptions, (err, response) => {
-        console.log(response);
-        console.log(err);
+      Account.remove({id: this.lastOptions.account_id}, (err, response) => {
+        App.updateWidgets()
       })
     };
   }
@@ -65,7 +67,10 @@ class TransactionsPage {
    * либо обновляйте текущую страницу (метод update) и виджет со счетами
    * */
   removeTransaction( id ) {
-
+    Transaction.remove({id: id}, (err, response) => {
+      this.update();
+      App.updateWidgets();
+    })
   }
 
   /**
@@ -77,13 +82,12 @@ class TransactionsPage {
   render(options){
    if(options === undefined) return;
     this.lastOptions = options;
-    Account.get(options.account_id, (err, response) => {
+    Account.get(options, (err, response) => {
       response.data.map( item => {
         if(item.id === options.account_id){
           this.renderTitle(item.name);
           Transaction.list(this.lastOptions, (err, response) => {
-            console.log(err);
-            console.log(response);
+            this.renderTransactions(response.data);
           })
         }
       })
@@ -96,7 +100,9 @@ class TransactionsPage {
    * Устанавливает заголовок: «Название счёта»
    * */
   clear() {
-
+    this.renderTransactions([]);
+    this.renderTitle("Название счета");
+    this.lastOptions = "";
   }
 
   /**
@@ -111,7 +117,24 @@ class TransactionsPage {
    * в формат «10 марта 2019 г. в 03:20»
    * */
   formatDate(date){
-    
+    const mounths = {
+      Jan: "Января",
+      Feb: "Февраля",
+      Mar: "Марта",
+      Apr: "Апреля",
+      May: "Мая",
+      Jun: "Июня",
+      Jul: "Июля",
+      Aug: "Августа",
+      Sep: "Сентября",
+      Oct: "Октября",
+      Nov: "Ноября",
+      Dec: "Декабря"
+    }
+
+    let convertDate = new Date(Date.parse(date)).toString().split(" ");
+    return `${convertDate[2]} ${mounths[convertDate[1]]} ${convertDate[3]}г. в ${convertDate[4].substr(0, 5)}`;
+
   }
 
   /**
@@ -119,7 +142,30 @@ class TransactionsPage {
    * item - объект с информацией о транзакции
    * */
   getTransactionHTML(item){
-
+     return `<div class="transaction transaction_${item.type} row">
+      <div class="col-md-7 transaction__details">
+        <div class="transaction__icon">
+            <span class="fa fa-money fa-2x"></span>
+        </div>
+        <div class="transaction__info">
+            <h4 class="transaction__title">${item.name}</h4>
+            <!-- дата -->
+            <div class="transaction__date">${this.formatDate(item.created_at)}</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="transaction__summ">
+        <!--  сумма -->
+            ${item.sum} <span class="currency">₽</span>
+        </div>
+      </div>
+      <div class="col-md-2 transaction__controls">
+          <!-- в data-id нужно поместить id -->
+          <button class="btn btn-danger transaction__remove" data-id="${item.id}">
+              <i class="fa fa-trash"></i>  
+          </button>
+      </div>
+    </div>`
   }
 
   /**
@@ -127,6 +173,11 @@ class TransactionsPage {
    * используя getTransactionHTML
    * */
   renderTransactions(data){
-
+    if(this.element.querySelector(".content").innerHTML !== undefined){
+      this.element.querySelector(".content").innerHTML = "";
+    }
+    data.forEach(item => {
+      this.element.querySelector(".content").insertAdjacentHTML("beforeEnd", this.getTransactionHTML(item));
+    })
   }
 }
