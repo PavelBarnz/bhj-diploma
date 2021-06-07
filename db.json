@@ -5,12 +5,6 @@
       "email": "demo@demo",
       "password": "demo",
       "id": "1"
-    },
-    {
-      "name": "Pavel Barnz",
-      "email": "p.barnz91@gmail.com",
-      "password": "demo",
-      "id": "3ai3l4h8kpba0486"
     }
   ],
   "accounts": [
@@ -28,26 +22,6 @@
       "name": "Бизнес",
       "user_id": "1",
       "id": "3"
-    },
-    {
-      "name": "Мой первый счет",
-      "user_id": "3ai3l4h8kpba0486",
-      "id": "3ai3l314kpfldlso"
-    },
-    {
-      "name": "Мой второй счет",
-      "user_id": "3ai3l4h8kpba0486",
-      "id": "3ai3l2nkkpfle3ga"
-    },
-    {
-      "name": "Мой третий счет",
-      "user_id": "3ai3l4h8kpba0486",
-      "id": "3ai3l6kkkpjl7v5h"
-    },
-    {
-      "name": "Удалить",
-      "user_id": "3ai3l4h8kpba0486",
-      "id": "3ai3l11okpjpuq1h"
     }
   ],
   "transactions": [
@@ -185,33 +159,6 @@
       "sum": 300000,
       "type": "expense",
       "user_id": "1"
-    },
-    {
-      "id": "3ai3l1hgkpks20o0",
-      "type": "income",
-      "name": "Аванс",
-      "sum": 500,
-      "account_id": "3ai3l314kpfldlso",
-      "user_id": "3ai3l4h8kpba0486",
-      "created_at": "2021-06-06T06:01:27.263Z"
-    },
-    {
-      "id": "3ai3l880kpks24em",
-      "type": "expense",
-      "name": "Шаурма",
-      "sum": 150,
-      "account_id": "3ai3l314kpfldlso",
-      "user_id": "3ai3l4h8kpba0486",
-      "created_at": "2021-06-06T06:01:32.109Z"
-    },
-    {
-      "id": "3ai3l48skpksxq4g",
-      "type": "income",
-      "name": "Аванс",
-      "sum": 100,
-      "account_id": "3ai3l314kpfldlso",
-      "user_id": "3ai3l4h8kpba0486",
-      "created_at": "2021-06-06T06:26:06.591Z"
     }
   ]
 }
