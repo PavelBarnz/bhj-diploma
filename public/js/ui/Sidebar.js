@@ -46,7 +46,7 @@ class Sidebar {
 
         let data = JSON.parse(localStorage.getItem("user"));
         User.logout(data, (err, response) => {
-          if(response.success == true){
+          if(response.success){
             App.setState('init');
           }
         })

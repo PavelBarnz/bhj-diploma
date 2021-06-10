@@ -45,6 +45,11 @@ class User {
       method: "GET",
       responseType: "json",
       callback: (err, response) => {
+        if (response.success){
+          this.setCurrent(response.user);
+        } else {
+          this.unsetCurrent();
+        }
         callback(err, response);
       }
     })

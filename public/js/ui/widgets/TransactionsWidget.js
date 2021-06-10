@@ -12,6 +12,9 @@ class TransactionsWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor( element ) {
+    if(!element){
+      throw new Error("Передан пустой элемент!")
+    }
     this.element = element;
     this.registerEvents();
   }
